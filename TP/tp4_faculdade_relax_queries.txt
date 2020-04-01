@@ -1,0 +1,21 @@
+F1 = π nr Aluno
+F2 = π cod, design (σ curso = 'AC' Cadeira)
+F3 = π Nome (Aluno ⨝ Prof)
+F3_alternative = (π Nome Aluno) ∩ (π Nome Prof)
+F4 = π Nome Aluno - π Nome Prof
+F5 = π Nome Aluno ∪ π Nome Prof
+F6 = π Nome Aluno ⨝ σ cod = 'TS1' Prova
+F7 = π Nome Aluno ⨝ σ curso = 'IS' Cadeira
+F8 = (π Nome, cod (Aluno ⨝ σ nota >= 10 Prova))÷(π cod σ curso = 'IS' Cadeira)
+F9 = γ max(nota)->maxNota Prova
+F10 = γ avg(nota)->Media σ cod = 'BD' Prova
+F11 = γ count(nr)->numAlunos Aluno
+F12 = γ curso; count(cod)->codCount Cadeira
+F13 = γ nr; count(*)->numProvas Prova
+F14 = γ avg(numProvas)->avgNumProvasPorAluno F13
+F15 = γ Nome; avg(nota)->media (σ nota ≥ 10 Prova ⨝ Aluno)
+maxNotaPorCadeira = γ cod; max(nota)->nota Prova
+F16 = π Nome, cod, nota (Aluno ⨝ maxNotaPorCadeira ⨝ Prova)
+F17_denominator = (π cod σ nota ≥ 10 (Aluno ⨝ Cadeira ⨝ Prova))
+F17_numerator = (π Nome (Aluno ⨝ Cadeira))
+F17_numerator
