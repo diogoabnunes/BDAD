@@ -1,0 +1,32 @@
+  <question type="multichoice">
+    <name>
+      <text>Teoria Modelo Relacional</text>
+    </name>
+    <questiontext format="html">
+      <text>When models are in normal form:</text>
+    </questiontext>
+    <answer fraction="100" format="html">
+      <text>There is no redundancy.</text>
+      <feedback format="html">
+        <text>Correct! None data is duplicated.</text>
+      </feedback>
+    </answer>
+    <answer fraction="0" format="html">
+      <text>The same information can be stored several times.</text>
+      <feedback format="html">
+        <text>Incorrect... This happens if models are NOT in normal form...</text>
+      </feedback>
+    </answer>
+    <answer fraction="0" format="html">
+      <text>Data can be updated in some tables, but not in others.</text>
+      <feedback format="html">
+        <text>Incorrect... This happens if models are NOT in normal form...</text>
+      </feedback>
+    </answer>
+    <answer fraction="0" format="html">
+      <text>We can accidentally delete some tuples.</text>
+      <feedback format="html">
+        <text>Incorrect... This happens if models are NOT in normal form...</text>
+      </feedback>
+    </answer>
+  </question>
