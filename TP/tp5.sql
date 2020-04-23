@@ -90,4 +90,3 @@ from (select cod, MAX(nota) maxNota from Prova group by cod) A, Prova, Aluno
 where A.cod = Prova.cod AND nota=maxNota AND Prova.nr=Aluno.nr; 
 
 --17
-
