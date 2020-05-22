@@ -198,3 +198,46 @@ INSERT INTO FuncionarioReparacao (idFuncionario, idReparacao, numHoras) VALUES (
 INSERT INTO FuncionarioReparacao (idFuncionario, idReparacao, numHoras) VALUES (2,2,6);
 INSERT INTO FuncionarioReparacao (idFuncionario, idReparacao, numHoras) VALUES (4,2,2);
 INSERT INTO FuncionarioReparacao (idFuncionario, idReparacao, numHoras) VALUES (1,3,1);
+
+CREATE VIEW PrecoReparacaoFuncionario AS 
+    SELECT FuncionarioReparacao.idReparacao AS idReparacao, 
+    ifnull(SUM(Especialidade.custoHorario*FuncionarioReparacao.numHoras),0) AS precoFuncionario 
+    FROM Especialidade, Funcionario, FuncionarioReparacao 
+    WHERE Especialidade.idEspecialidade=Funcionario.idEspecialidade AND 
+    Funcionario.idFuncionario=FuncionarioReparacao.idFuncionario 
+    GROUP BY FuncionarioReparacao.idReparacao; 
+
+CREATE VIEW PrecoReparacaoPeca AS 
+    SELECT ReparacaoPeca.idReparacao AS idReparacao, 
+    ifnull(SUM(Peca.custoUnitario*ReparacaoPeca.quantidade),0) AS precoPeca 
+    FROM ReparacaoPeca, Peca 
+    WHERE ReparacaoPeca.idPeca=Peca.idpeca 
+    GROUP BY ReparacaoPeca.idReparacao; 
+
+CREATE VIEW PrecoReparacao AS 
+    SELECT ifnull(idReparacao1,idReparacao2) AS idReparacao, 
+    ifnull(precoFuncionario,0) + ifnull(precoPeca,0) AS preco 
+    FROM 
+    (SELECT PrecoReparacaoFuncionario.idReparacao AS idReparacao1, 
+    PrecoReparacaoFuncionario.precoFuncionario, PrecoReparacaoPeca.idReparacao AS idReparacao2, 
+    PrecoReparacaoPeca.precoPeca 
+    FROM PrecoReparacaoFuncionario 
+    LEFT JOIN PrecoReparacaoPeca ON PrecoReparacaoFuncionario.idReparacao = PrecoReparacaoPeca.idReparacao 
+    UNION ALL 
+    SELECT PrecoReparacaoFuncionario.idReparacao AS idReparacao1, 
+    PrecoReparacaoFuncionario.precoFuncionario, 
+    PrecoReparacaoPeca.idReparacao AS idReparacao2, PrecoReparacaoPeca.precoPeca 
+    FROM PrecoReparacaoPeca 
+    LEFT JOIN PrecoReparacaoFuncionario ON PrecoReparacaoFuncionario.idReparacao = PrecoReparacaoPeca.idReparacao 
+    WHERE PrecoReparacaoFuncionario.idReparacao IS NULL); 
+
+CREATE VIEW PecaMarca AS 
+    SELECT Peca.idPeca, codigo, custoUnitario, Marca.idMarca, Marca.nome 
+    FROM Peca, PecaModelo, Modelo, Marca 
+    WHERE Peca.idPeca = PecaModelo.idPeca AND 
+    PecaModelo.idModelo = Modelo.idModelo AND 
+    Modelo.idMarca = Marca.idMarca; 
+
+CREATE VIEW modelosMarcas AS SELECT Modelo.nome AS nomeModelo, Marca.nome AS nomeMarca 
+FROM Modelo, Marca 
+WHERE Modelo.idMarca=Marca.idMarca; 
